@@ -5,7 +5,11 @@
 #pragma once
 
 #define _USE_MATH_DEFINES
-#define GamepadMotion_WRAPPER _declspec(dllexport)
+#if defined(GamepadMotion_WRAPPER_WITHOUTDLL)
+    #define GamepadMotion_WRAPPER
+#else
+    #define GamepadMotion_WRAPPER __declspec(dllexport)
+#endif
 #include <math.h>
 #include <algorithm> // std::min, std::max and std::clamp
 
