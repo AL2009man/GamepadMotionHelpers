@@ -31,3 +31,6 @@
 *.out
 *.app
 /bin
+/.vs
+/.vscode
+/out/build/x64-Debug
