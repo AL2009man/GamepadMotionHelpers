@@ -275,144 +275,144 @@ private:
 	void GetCalibratedSensor(float& gyroOffsetX, float& gyroOffsetY, float& gyroOffsetZ, float& accelMagnitude);
 };
 
-// This is the C++/C abstraction layer for the GamepadMotion class.
+// This is the C wrapper for the GamepadMotion class.
 extern "C" {
+	// Creates a new GamepadMotion object
+	GamepadMotion* CreateGamepadMotion() {
+		return new GamepadMotion();
+	}
 
-    // Forward declaration of the GamepadMotion class for C linkage
-    typedef struct GamepadMotion GamepadMotion;
+	// Delete a new GamepadMotion object
+	void DeleteGamepadMotion(GamepadMotion* motion)
+	{
+		if (motion != nullptr) {
+			delete motion;
+			motion = nullptr; // Optional: Set the pointer to nullptr to avoid dangling references
+		}
+	}
 
-    // C-compatible API for C++ GamepadMotion class
-    GamepadMotion* CreateGamepadMotion();
-    void DeleteGamepadMotion(GamepadMotion* motion);
-    void ResetGamepadMotion(GamepadMotion* motion);
-    void ProcessMotion(GamepadMotion* motion, float gyroX, float gyroY, float gyroZ,
-        float accelX, float accelY, float accelZ, float deltaTime);
-    void GetCalibratedGyro(GamepadMotion* motion, float* x, float* y, float* z);
-    void GetGravity(GamepadMotion* motion, float* x, float* y, float* z);
-    void GetProcessedAcceleration(GamepadMotion* motion, float* x, float* y, float* z);
-    void GetOrientation(GamepadMotion* motion, float* w, float* x, float* y, float* z);
-    void GetPlayerSpaceGyro(GamepadMotion* motion, float* x, float* y, float yawRelaxFactor);
-    void GetWorldSpaceGyro(GamepadMotion* motion, float* x, float* y, float sideReductionThreshold);
-    void StartContinuousCalibration(GamepadMotion* motion);
-    void PauseContinuousCalibration(GamepadMotion* motion);
-    void ResetContinuousCalibration(GamepadMotion* motion);
-    void GetCalibrationOffset(GamepadMotion* motion, float* xOffset, float* yOffset, float* zOffset);
-    void SetCalibrationOffset(GamepadMotion* motion, float xOffset, float yOffset, float zOffset, int weight);
-    float GetAutoCalibrationConfidence(GamepadMotion* motion);
-    void SetAutoCalibrationConfidence(GamepadMotion* motion, float newConfidence);
-    bool GetAutoCalibrationIsSteady(GamepadMotion* motion);
-    int GetCalibrationMode(GamepadMotion* motion);
-    void SetCalibrationMode(GamepadMotion* motion, int calibrationMode);
-    void ResetMotion(GamepadMotion* motion);
-    void CalculatePlayerSpaceGyro(float* x, float* y, float gyroX, float gyroY, float gyroZ, float gravX, float gravY, float gravZ, float yawRelaxFactor);
-    void CalculateWorldSpaceGyro(float* x, float* y, float gyroX, float gyroY, float gyroZ, float gravX, float gravY, float gravZ, float sideReductionThreshold);
+	// Resets the GamepadMotion object
+	void ResetGamepadMotion(GamepadMotion* motion) {
+		if (motion) {
+			motion->Reset();
+		}
+	}
 
-    // Implementation
-    GamepadMotion* CreateGamepadMotion() {
-        return new GamepadMotion();
-    }
+	// Processes motion input for the GamepadMotion object
+	void ProcessMotion(GamepadMotion* motion, float gyroX, float gyroY, float gyroZ,
+		float accelX, float accelY, float accelZ, float deltaTime) {
+		if (motion) {
+			motion->ProcessMotion(gyroX, gyroY, gyroZ, accelX, accelY, accelZ, deltaTime);
+		}
+	}
 
-    void DeleteGamepadMotion(GamepadMotion* motion) {
-        delete motion;
-    }
+	// Wrapper methods to call GamepadMotion functions
+	void GetCalibratedGyro(GamepadMotion* motion, float& x, float& y, float& z) {
+		if (motion) {
+			motion->GetCalibratedGyro(x, y, z);
+		}
+	}
 
-    void ResetGamepadMotion(GamepadMotion* motion) {
-        if (motion) motion->Reset();
-    }
+	void GetGravity(GamepadMotion* motion, float& x, float& y, float& z) {
+		if (motion) {
+			motion->GetGravity(x, y, z);
+		}
+	}
 
-    void ProcessMotion(GamepadMotion* motion, float gyroX, float gyroY, float gyroZ,
-        float accelX, float accelY, float accelZ, float deltaTime) {
-        if (motion) motion->ProcessMotion(gyroX, gyroY, gyroZ, accelX, accelY, accelZ, deltaTime);
-    }
+	void GetProcessedAcceleration(GamepadMotion* motion, float& x, float& y, float& z) {
+		if (motion) {
+			motion->GetProcessedAcceleration(x, y, z);
+		}
+	}
 
-    void GetCalibratedGyro(GamepadMotion* motion, float* x, float* y, float* z) {
-        if (motion && x && y && z) motion->GetCalibratedGyro(*x, *y, *z);
-    }
+	void GetOrientation(GamepadMotion* motion, float& w, float& x, float& y, float& z) {
+		if (motion) {
+			motion->GetOrientation(w, x, y, z);
+		}
+	}
 
-    void GetGravity(GamepadMotion* motion, float* x, float* y, float* z) {
-        if (motion && x && y && z) motion->GetGravity(*x, *y, *z);
-    }
+	void GetPlayerSpaceGyro(GamepadMotion* motion, float& x, float& y, const float yawRelaxFactor = 1.41f) {
+		if (motion) {
+			motion->GetPlayerSpaceGyro(x, y, yawRelaxFactor);
+		}
+	}
 
-    void GetProcessedAcceleration(GamepadMotion* motion, float* x, float* y, float* z) {
-        if (motion && x && y && z) motion->GetProcessedAcceleration(*x, *y, *z);
-    }
+	void GetWorldSpaceGyro(GamepadMotion* motion, float& x, float& y, const float sideReductionThreshold = 0.125f) {
+		if (motion) {
+			motion->GetWorldSpaceGyro(x, y, sideReductionThreshold);
+		}
+	}
 
-    void GetOrientation(GamepadMotion* motion, float* w, float* x, float* y, float* z) {
-        if (motion && w && x && y && z) motion->GetOrientation(*w, *x, *y, *z);
-    }
+	// Gyro calibration functions
+	void StartContinuousCalibration(GamepadMotion* motion) {
+		if (motion) {
+			motion->StartContinuousCalibration();
+		}
+	}
 
-    void GetPlayerSpaceGyro(GamepadMotion* motion, float* x, float* y, float yawRelaxFactor) {
-        float gx = 0.0f, gy = 0.0f;
-        if (motion) motion->GetPlayerSpaceGyro(gx, gy, yawRelaxFactor);
-        if (x) *x = gx;
-        if (y) *y = gy;
-    }
+	void PauseContinuousCalibration(GamepadMotion* motion) {
+		if (motion) {
+			motion->PauseContinuousCalibration();
+		}
+	}
 
-    void GetWorldSpaceGyro(GamepadMotion* motion, float* x, float* y, float sideReductionThreshold) {
-        float gx = 0.0f, gy = 0.0f;
-        if (motion) motion->GetWorldSpaceGyro(gx, gy, sideReductionThreshold);
-        if (x) *x = gx;
-        if (y) *y = gy;
-    }
+	void ResetContinuousCalibration(GamepadMotion* motion) {
+		if (motion) {
+			motion->ResetContinuousCalibration();
+		}
+	}
 
-    void StartContinuousCalibration(GamepadMotion* motion) {
-        if (motion) motion->StartContinuousCalibration();
-    }
+	void GetCalibrationOffset(GamepadMotion* motion, float& xOffset, float& yOffset, float& zOffset) {
+		if (motion) {
+			motion->GetCalibrationOffset(xOffset, yOffset, zOffset);
+		}
+	}
 
-    void PauseContinuousCalibration(GamepadMotion* motion) {
-        if (motion) motion->PauseContinuousCalibration();
-    }
+	void SetCalibrationOffset(GamepadMotion* motion, float xOffset, float yOffset, float zOffset, int weight) {
+		if (motion) {
+			motion->SetCalibrationOffset(xOffset, yOffset, zOffset, weight);
+		}
+	}
 
-    void ResetContinuousCalibration(GamepadMotion* motion) {
-        if (motion) motion->ResetContinuousCalibration();
-    }
+	float GetAutoCalibrationConfidence(GamepadMotion* motion) {
+		if (motion) {
+			return motion->GetAutoCalibrationConfidence();
+		}
+		return 0.0f; // Default confidence value
+	}
 
-    void GetCalibrationOffset(GamepadMotion* motion, float* xOffset, float* yOffset, float* zOffset) {
-        if (motion && xOffset && yOffset && zOffset) motion->GetCalibrationOffset(*xOffset, *yOffset, *zOffset);
-    }
+	void SetAutoCalibrationConfidence(GamepadMotion* motion, float newConfidence) {
+		if (motion) {
+			motion->SetAutoCalibrationConfidence(newConfidence);
+		}
+	}
 
-    void SetCalibrationOffset(GamepadMotion* motion, float xOffset, float yOffset, float zOffset, int weight) {
-        if (motion) motion->SetCalibrationOffset(xOffset, yOffset, zOffset, weight);
-    }
+	bool GetAutoCalibrationIsSteady(GamepadMotion* motion) {
+		if (motion) {
+			return motion->GetAutoCalibrationIsSteady();
+		}
+		return false; // Default steady state
+	}
 
-    float GetAutoCalibrationConfidence(GamepadMotion* motion) {
-        return motion ? motion->GetAutoCalibrationConfidence() : 0.0f;
-    }
+	GamepadMotionHelpers::CalibrationMode GetCalibrationMode(GamepadMotion* motion) {
+		if (motion) {
+			return motion->GetCalibrationMode();
+		}
+		return GamepadMotionHelpers::CalibrationMode::Manual; // Default calibration mode
+	}
 
-    void SetAutoCalibrationConfidence(GamepadMotion* motion, float newConfidence) {
-        if (motion) motion->SetAutoCalibrationConfidence(newConfidence);
-    }
+	void SetCalibrationMode(GamepadMotion* motion, GamepadMotionHelpers::CalibrationMode calibrationMode) {
+		if (motion) {
+			motion->SetCalibrationMode(calibrationMode);
+		}
+	}
 
-    bool GetAutoCalibrationIsSteady(GamepadMotion* motion) {
-        return motion ? motion->GetAutoCalibrationIsSteady() : false;
-    }
-
-    int GetCalibrationMode(GamepadMotion* motion) {
-        return motion ? static_cast<int>(motion->GetCalibrationMode()) : 0;
-    }
-
-    void SetCalibrationMode(GamepadMotion* motion, int calibrationMode) {
-        if (motion) motion->SetCalibrationMode(static_cast<GamepadMotionHelpers::CalibrationMode>(calibrationMode));
-    }
-
-    void ResetMotion(GamepadMotion* motion) {
-        if (motion) motion->ResetMotion();
-    }
-
-    void CalculatePlayerSpaceGyro(float* x, float* y, float gyroX, float gyroY, float gyroZ, float gravX, float gravY, float gravZ, float yawRelaxFactor) {
-        float outX = 0.0f, outY = 0.0f;
-        GamepadMotion::CalculatePlayerSpaceGyro(outX, outY, gyroX, gyroY, gyroZ, gravX, gravY, gravZ, yawRelaxFactor);
-        if (x) *x = outX;
-        if (y) *y = outY;
-    }
-
-    void CalculateWorldSpaceGyro(float* x, float* y, float gyroX, float gyroY, float gyroZ, float gravX, float gravY, float gravZ, float sideReductionThreshold) {
-        float outX = 0.0f, outY = 0.0f;
-        GamepadMotion::CalculateWorldSpaceGyro(outX, outY, gyroX, gyroY, gyroZ, gravX, gravY, gravZ, sideReductionThreshold);
-        if (x) *x = outX;
-        if (y) *y = outY;
-    }
-} // extern "C"
+	void ResetMotion(GamepadMotion* motion) {
+		if (motion) {
+			motion->ResetMotion();
+		}
+	}
+}
 
 ///////////// Everything below here are just implementation details /////////////
 
