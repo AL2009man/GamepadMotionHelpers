@@ -7,226 +7,85 @@ Convert your gyro units into **degrees per second** and accelerometer units to *
 ## Coordinate Space
 This library uses a Y-up coordinate system. While Z-up is (only slightly) preferable for many games, PlayStation controllers use Y-up, and have set the standard for input libraries like [SDL2](https://github.com/libsdl-org/SDL) and [JSL](https://github.com/JibbSmart/JoyShockLibrary). These libraries convert inputs from other controller types to the same space used by PlayStation's DualShock 4 and DualSense, so that's what's used here.
 
-## C# Use
-```cs
-using System;
-using System.Runtime.InteropServices;
+## C Wrapper Header
+To use the C Wrapper API, include the provided `GamepadMotion.h` header in your C or C++ project or create a custom wrapper. The header will expose the C-compatible functions for creating, using, and destroying `GamepadMotion` objects from C or other languages that support C FFI.
 
-namespace HandheldCompanion.Helpers
-{
-    public enum CalibrationMode
-    {
-        Manual = 0,
-        Stillness = 1,
-        SensorFusion = 2,
-    }
+Example:
+```c
+#include "GamepadMotion.h"
+```
 
-    public class GamepadMotion : IDisposable
-    {
-        private IntPtr handle;
-        private const string DllName = "GamepadMotion.dll";
+You must link against the compiled library that provides these functions (e.g., a DLL or static library built from this project).
 
-        public GamepadMotion()
-        {
-            handle = CreateGamepadMotion();
-        }
+### C Use
+```c
+#include "GamepadMotion.h"
+#include <stdio.h>
 
-        ~GamepadMotion()
-        {
-            Dispose(false);
-        }
+int main() {
+    // Create a GamepadMotion instance
+    GamepadMotion* motion = CreateGamepadMotion();
+    if (!motion) return 1;
 
-        public void Reset()
-        {
-            ResetGamepadMotion(handle);
-        }
+    // Placeholder sensor data (replace with real values from your device)
+    float gyroX = 0.0f, gyroY = 0.0f, gyroZ = 0.0f;
+    float accelX = 0.0f, accelY = -1.0f, accelZ = 0.0f;
+    float deltaTime = 0.016f; // 16 ms
 
-        // Implement the ProcessMotion function
-        public void ProcessMotion(float gyroX, float gyroY, float gyroZ, float accelX, float accelY, float accelZ, float deltaTime)
-        {
-            ProcessMotion(handle, gyroX, gyroY, gyroZ, accelX, accelY, accelZ, deltaTime);
-        }
+    // Process motion sample
+    ProcessMotion(motion, gyroX, gyroY, gyroZ, accelX, accelY, accelZ, deltaTime);
 
-        // Implement the GetCalibratedGyro function
-        public void GetCalibratedGyro(out float x, out float y, out float z)
-        {
-            GetCalibratedGyro(handle, out x, out y, out z);
-        }
+    // Read calibrated gyro
+    float x, y, z;
+    GetCalibratedGyro(motion, &x, &y, &z);
 
-        // Implement the GetGravity function
-        public void GetGravity(out float x, out float y, out float z)
-        {
-            GetGravity(handle, out x, out y, out z);
-        }
+    // Read gravity
+    float gx, gy, gz;
+    GetGravity(motion, &gx, &gy, &gz);
 
-        // Implement the GetProcessedAcceleration function
-        public void GetProcessedAcceleration(out float x, out float y, out float z)
-        {
-            GetProcessedAcceleration(handle, out x, out y, out z);
-        }
+    // Read processed acceleration
+    float ax, ay, az;
+    GetProcessedAcceleration(motion, &ax, &ay, &az);
 
-        // Implement the GetOrientation function
-        public void GetOrientation(out float w, out float x, out float y, out float z)
-        {
-            GetOrientation(handle, out w, out x, out y, out z);
-        }
+    // Read orientation (quaternion)
+    float w, ox, oy, oz;
+    GetOrientation(motion, &w, &ox, &oy, &oz);
 
-        // Implement the GetPlayerSpaceGyro function
-        public void GetPlayerSpaceGyro(out float x, out float y, float yawRelaxFactor)
-        {
-            GetPlayerSpaceGyro(handle, out x, out y, yawRelaxFactor);
-        }
+    // Read player space gyro
+    float px, py;
+    GetPlayerSpaceGyro(motion, &px, &py, 1.41f);
 
-        // Implement the GetWorldSpaceGyro function
-        public void GetWorldSpaceGyro(out float x, out float y, float sideReductionThreshold)
-        {
-            GetWorldSpaceGyro(handle, out x, out y, sideReductionThreshold);
-        }
+    // Read world space gyro
+    float wx, wy;
+    GetWorldSpaceGyro(motion, &wx, &wy, 0.125f);
 
-        // Implement the StartContinuousCalibration function
-        public void StartContinuousCalibration()
-        {
-            StartContinuousCalibration(handle);
-        }
+    // Gyro calibration functions
+    StartContinuousCalibration(motion);
+    PauseContinuousCalibration(motion);
+    ResetContinuousCalibration(motion);
 
-        // Implement the PauseContinuousCalibration function
-        public void PauseContinuousCalibration()
-        {
-            PauseContinuousCalibration(handle);
-        }
+    // Get and set calibration offset
+    float xOffset, yOffset, zOffset;
+    GetCalibrationOffset(motion, &xOffset, &yOffset, &zOffset);
+    SetCalibrationOffset(motion, xOffset, yOffset, zOffset, 10);
 
-        // Implement the ResetContinuousCalibration function
-        public void ResetContinuousCalibration()
-        {
-            ResetContinuousCalibration(handle);
-        }
+    // Get/set auto calibration confidence
+    float confidence = GetAutoCalibrationConfidence(motion);
+    SetAutoCalibrationConfidence(motion, confidence);
 
-        // Implement the GetCalibrationOffset function
-        public void GetCalibrationOffset(out float xOffset, out float yOffset, out float zOffset)
-        {
-            GetCalibrationOffset(handle, out xOffset, out yOffset, out zOffset);
-        }
+    // Check if auto calibration is steady
+    bool isSteady = GetAutoCalibrationIsSteady(motion);
 
-        // Implement the SetCalibrationOffset function
-        public void SetCalibrationOffset(float xOffset, float yOffset, float zOffset, int weight)
-        {
-            SetCalibrationOffset(handle, xOffset, yOffset, zOffset, weight);
-        }
+    // Get/set calibration mode
+    int mode = GetCalibrationMode(motion);
+    SetCalibrationMode(motion, mode);
 
-        // Implement the GetAutoCalibrationConfidence function
-        public float GetAutoCalibrationConfidence()
-        {
-            return GetAutoCalibrationConfidence(handle);
-        }
+    // Reset motion
+    ResetMotion(motion);
 
-        // Implement the SetAutoCalibrationConfidence function
-        public void SetAutoCalibrationConfidence(float newConfidence)
-        {
-            SetAutoCalibrationConfidence(handle, newConfidence);
-        }
-
-        // Implement the GetAutoCalibrationIsSteady function
-        public bool GetAutoCalibrationIsSteady()
-        {
-            return GetAutoCalibrationIsSteady(handle);
-        }
-
-        // Implement the GetCalibrationMode function
-        public CalibrationMode GetCalibrationMode()
-        {
-            return GetCalibrationMode(handle);
-        }
-
-        // Implement the SetCalibrationMode function
-        public void SetCalibrationMode(CalibrationMode calibrationMode)
-        {
-            SetCalibrationMode(handle, calibrationMode);
-        }
-
-        // Implement the ResetMotion function
-        public void ResetMotion()
-        {
-            ResetMotion(handle);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (handle != IntPtr.Zero)
-            {
-                DeleteGamepadMotion(handle);
-                handle = IntPtr.Zero;
-            }
-        }
-
-        [DllImport(DllName)]
-        private static extern IntPtr CreateGamepadMotion();
-
-        [DllImport(DllName)]
-        private static extern void DeleteGamepadMotion(IntPtr motion);
-
-        [DllImport(DllName)]
-        private static extern void ResetGamepadMotion(IntPtr motion);
-
-        [DllImport(DllName)]
-        private static extern void ProcessMotion(IntPtr motion, float gyroX, float gyroY, float gyroZ, float accelX, float accelY, float accelZ, float deltaTime);
-
-        [DllImport(DllName)]
-        private static extern void GetCalibratedGyro(IntPtr motion, out float x, out float y, out float z);
-
-        [DllImport(DllName)]
-        private static extern void GetGravity(IntPtr motion, out float x, out float y, out float z);
-
-        [DllImport(DllName)]
-        private static extern void GetProcessedAcceleration(IntPtr motion, out float x, out float y, out float z);
-
-        [DllImport(DllName)]
-        private static extern void GetOrientation(IntPtr motion, out float w, out float x, out float y, out float z);
-
-        [DllImport(DllName)]
-        private static extern void GetPlayerSpaceGyro(IntPtr motion, out float x, out float y, float yawRelaxFactor);
-
-        [DllImport(DllName)]
-        private static extern void GetWorldSpaceGyro(IntPtr motion, out float x, out float y, float sideReductionThreshold);
-
-        [DllImport(DllName)]
-        private static extern void StartContinuousCalibration(IntPtr motion);
-
-        [DllImport(DllName)]
-        private static extern void PauseContinuousCalibration(IntPtr motion);
-
-        [DllImport(DllName)]
-        private static extern void ResetContinuousCalibration(IntPtr motion);
-
-        [DllImport(DllName)]
-        private static extern void GetCalibrationOffset(IntPtr motion, out float xOffset, out float yOffset, out float zOffset);
-
-        [DllImport(DllName)]
-        private static extern void SetCalibrationOffset(IntPtr motion, float xOffset, float yOffset, float zOffset, int weight);
-
-        [DllImport(DllName)]
-        private static extern float GetAutoCalibrationConfidence(IntPtr motion);
-
-        [DllImport(DllName)]
-        private static extern void SetAutoCalibrationConfidence(IntPtr motion, float newConfidence);
-
-        [DllImport(DllName)]
-        private static extern bool GetAutoCalibrationIsSteady(IntPtr motion);
-
-        [DllImport(DllName)]
-        private static extern CalibrationMode GetCalibrationMode(IntPtr motion);
-
-        [DllImport(DllName)]
-        private static extern void SetCalibrationMode(IntPtr motion, CalibrationMode calibrationMode);
-
-        [DllImport(DllName)]
-        private static extern void ResetMotion(IntPtr motion);
-    }
+    // Clean up
+    DeleteGamepadMotion(motion);
+    return 0;
 }
 ```
 
