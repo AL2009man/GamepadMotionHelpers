@@ -278,11 +278,11 @@ private:
 // C wrapper for the GamepadMotion API class.
 extern "C" {
 
-	GamepadMotion* gmhCreateGamepadMotion() {
+	GamepadMotion* CreateGamepadMotion() {
 		return new GamepadMotion();
 	}
 
-	void gmhDeleteGamepadMotion(GamepadMotion* motion)
+	void DeleteGamepadMotion(GamepadMotion* motion)
 	{
 		if (motion != nullptr) {
 			delete motion;
@@ -290,445 +290,445 @@ extern "C" {
 		}
 	}
 
-	void gmhResetGamepadMotion(GamepadMotion* motion) {
+	void ResetGamepadMotion(GamepadMotion* motion) {
 		if (motion) {
 			motion->Reset();
 		}
 	}
 
-	void gmhProcessMotion(GamepadMotion* motion, float gyroX, float gyroY, float gyroZ,
+	void ProcessMotion(GamepadMotion* motion, float gyroX, float gyroY, float gyroZ,
 		float accelX, float accelY, float accelZ, float deltaTime) {
 		if (motion) {
 			motion->ProcessMotion(gyroX, gyroY, gyroZ, accelX, accelY, accelZ, deltaTime);
 		}
 	}
 
-	void gmhGetCalibratedGyro(GamepadMotion* motion, float* x, float* y, float* z) {
+	void GetCalibratedGyro(GamepadMotion* motion, float* x, float* y, float* z) {
 		if (motion) {
 			motion->GetCalibratedGyro(*x, *y, *z);
 		}
 	}
 
-	void gmhGetGravity(GamepadMotion* motion, float* x, float* y, float* z) {
+	void GetGravity(GamepadMotion* motion, float* x, float* y, float* z) {
 		if (motion) {
 			motion->GetGravity(*x, *y, *z);
 		}
 	}
 
-	void gmhGetProcessedAcceleration(GamepadMotion* motion, float* x, float* y, float* z) {
+	void GetProcessedAcceleration(GamepadMotion* motion, float* x, float* y, float* z) {
 		if (motion) {
 			motion->GetProcessedAcceleration(*x, *y, *z);
 		}
 	}
 
-	void gmhGetOrientation(GamepadMotion* motion, float* w, float* x, float* y, float* z) {
+	void GetOrientation(GamepadMotion* motion, float* w, float* x, float* y, float* z) {
 		if (motion) {
 			motion->GetOrientation(*w, *x, *y, *z);
 		}
 	}
 
-	void gmhGetPlayerSpaceGyro(GamepadMotion* motion, float* x, float* y, float yawRelaxFactor) {
+	void GetPlayerSpaceGyro(GamepadMotion* motion, float* x, float* y, float yawRelaxFactor) {
 		if (motion) {
 			motion->GetPlayerSpaceGyro(*x, *y, yawRelaxFactor);
 		}
 	}
 
-	void gmhGetWorldSpaceGyro(GamepadMotion* motion, float* x, float* y, float sideReductionThreshold) {
+	void GetWorldSpaceGyro(GamepadMotion* motion, float* x, float* y, float sideReductionThreshold) {
 		if (motion) {
 			motion->GetWorldSpaceGyro(*x, *y, sideReductionThreshold);
 		}
 	}
 
 	// Gyro calibration functions
-	void gmhStartContinuousCalibration(GamepadMotion* motion) {
+	void StartContinuousCalibration(GamepadMotion* motion) {
 		if (motion) {
 			motion->StartContinuousCalibration();
 		}
 	}
 
-	void gmhPauseContinuousCalibration(GamepadMotion* motion) {
+	void PauseContinuousCalibration(GamepadMotion* motion) {
 		if (motion) {
 			motion->PauseContinuousCalibration();
 		}
 	}
 
-	void gmhResetContinuousCalibration(GamepadMotion* motion) {
+	void ResetContinuousCalibration(GamepadMotion* motion) {
 		if (motion) {
 			motion->ResetContinuousCalibration();
 		}
 	}
 
-	void gmhGetCalibrationOffset(GamepadMotion* motion, float* xOffset, float* yOffset, float* zOffset) {
+	void GetCalibrationOffset(GamepadMotion* motion, float* xOffset, float* yOffset, float* zOffset) {
 		if (motion) {
 			motion->GetCalibrationOffset(*xOffset, *yOffset, *zOffset);
 		}
 	}
 
-	void gmhSetCalibrationOffset(GamepadMotion* motion, float xOffset, float yOffset, float zOffset, int weight) {
+	void SetCalibrationOffset(GamepadMotion* motion, float xOffset, float yOffset, float zOffset, int weight) {
 		if (motion) {
 			motion->SetCalibrationOffset(xOffset, yOffset, zOffset, weight);
 		}
 	}
 
-	float gmhGetAutoCalibrationConfidence(GamepadMotion* motion) {
+	float GetAutoCalibrationConfidence(GamepadMotion* motion) {
 		if (motion) {
 			return motion->GetAutoCalibrationConfidence();
 		}
 		return 0.0f;
 	}
 
-	void gmhSetAutoCalibrationConfidence(GamepadMotion* motion, float newConfidence) {
+	void SetAutoCalibrationConfidence(GamepadMotion* motion, float newConfidence) {
 		if (motion) {
 			motion->SetAutoCalibrationConfidence(newConfidence);
 		}
 	}
 
-	bool gmhGetAutoCalibrationIsSteady(GamepadMotion* motion) {
+	bool GetAutoCalibrationIsSteady(GamepadMotion* motion) {
 		if (motion) {
 			return motion->GetAutoCalibrationIsSteady();
 		}
 		return false;
 	}
 
-	int gmhGetCalibrationMode(GamepadMotion* motion) {
+	int GetCalibrationMode(GamepadMotion* motion) {
 		if (motion) {
 			return (int)motion->GetCalibrationMode();
 		}
 		return 0;
 	}
 
-	void gmhSetCalibrationMode(GamepadMotion* motion, int calibrationMode) {
+	void SetCalibrationMode(GamepadMotion* motion, int calibrationMode) {
 		if (motion) {
 			motion->SetCalibrationMode((GamepadMotionHelpers::CalibrationMode)calibrationMode);
 		}
 	}
 
-	void gmhResetMotion(GamepadMotion* motion) {
+	void ResetMotion(GamepadMotion* motion) {
 		if (motion) {
 			motion->ResetMotion();
 		}
 	}
 
 	// GamepadMotionSettings C wrapper functions
-	void gmhSetMinStillnessSamples(GamepadMotion* motion, int value) {
+	void SetMinStillnessSamples(GamepadMotion* motion, int value) {
 		if (motion) {
 			motion->Settings.MinStillnessSamples = value;
 		}
 	}
 
-	int gmhGetMinStillnessSamples(GamepadMotion* motion) {
+	int GetMinStillnessSamples(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.MinStillnessSamples;
 		}
 		return 10;
 	}
 
-	void gmhSetMinStillnessCollectionTime(GamepadMotion* motion, float value) {
+	void SetMinStillnessCollectionTime(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.MinStillnessCollectionTime = value;
 		}
 	}
 
-	float gmhGetMinStillnessCollectionTime(GamepadMotion* motion) {
+	float GetMinStillnessCollectionTime(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.MinStillnessCollectionTime;
 		}
 		return 0.5f;
 	}
 
-	void gmhSetMinStillnessCorrectionTime(GamepadMotion* motion, float value) {
+	void SetMinStillnessCorrectionTime(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.MinStillnessCorrectionTime = value;
 		}
 	}
 
-	float gmhGetMinStillnessCorrectionTime(GamepadMotion* motion) {
+	float GetMinStillnessCorrectionTime(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.MinStillnessCorrectionTime;
 		}
 		return 2.0f;
 	}
 
-	void gmhSetMaxStillnessError(GamepadMotion* motion, float value) {
+	void SetMaxStillnessError(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.MaxStillnessError = value;
 		}
 	}
 
-	float gmhGetMaxStillnessError(GamepadMotion* motion) {
+	float GetMaxStillnessError(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.MaxStillnessError;
 		}
 		return 2.0f;
 	}
 
-	void gmhSetStillnessSampleDeteriorationRate(GamepadMotion* motion, float value) {
+	void SetStillnessSampleDeteriorationRate(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.StillnessSampleDeteriorationRate = value;
 		}
 	}
 
-	float gmhGetStillnessSampleDeteriorationRate(GamepadMotion* motion) {
+	float GetStillnessSampleDeteriorationRate(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.StillnessSampleDeteriorationRate;
 		}
 		return 0.2f;
 	}
 
-	void gmhSetStillnessErrorClimbRate(GamepadMotion* motion, float value) {
+	void SetStillnessErrorClimbRate(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.StillnessErrorClimbRate = value;
 		}
 	}
 
-	float gmhGetStillnessErrorClimbRate(GamepadMotion* motion) {
+	float GetStillnessErrorClimbRate(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.StillnessErrorClimbRate;
 		}
 		return 0.1f;
 	}
 
-	void gmhSetStillnessErrorDropOnRecalibrate(GamepadMotion* motion, float value) {
+	void SetStillnessErrorDropOnRecalibrate(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.StillnessErrorDropOnRecalibrate = value;
 		}
 	}
 
-	float gmhGetStillnessErrorDropOnRecalibrate(GamepadMotion* motion) {
+	float GetStillnessErrorDropOnRecalibrate(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.StillnessErrorDropOnRecalibrate;
 		}
 		return 0.1f;
 	}
 
-	void gmhSetStillnessCalibrationEaseInTime(GamepadMotion* motion, float value) {
+	void SetStillnessCalibrationEaseInTime(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.StillnessCalibrationEaseInTime = value;
 		}
 	}
 
-	float gmhGetStillnessCalibrationEaseInTime(GamepadMotion* motion) {
+	float GetStillnessCalibrationEaseInTime(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.StillnessCalibrationEaseInTime;
 		}
 		return 3.0f;
 	}
 
-	void gmhSetStillnessCalibrationHalfTime(GamepadMotion* motion, float value) {
+	void SetStillnessCalibrationHalfTime(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.StillnessCalibrationHalfTime = value;
 		}
 	}
 
-	float gmhGetStillnessCalibrationHalfTime(GamepadMotion* motion) {
+	float GetStillnessCalibrationHalfTime(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.StillnessCalibrationHalfTime;
 		}
 		return 0.1f;
 	}
 
-	void gmhSetStillnessConfidenceRate(GamepadMotion* motion, float value) {
+	void SetStillnessConfidenceRate(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.StillnessConfidenceRate = value;
 		}
 	}
 
-	float gmhGetStillnessConfidenceRate(GamepadMotion* motion) {
+	float GetStillnessConfidenceRate(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.StillnessConfidenceRate;
 		}
 		return 1.0f;
 	}
 
-	void gmhSetStillnessGyroDelta(GamepadMotion* motion, float value) {
+	void SetStillnessGyroDelta(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.StillnessGyroDelta = value;
 		}
 	}
 
-	float gmhGetStillnessGyroDelta(GamepadMotion* motion) {
+	float GetStillnessGyroDelta(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.StillnessGyroDelta;
 		}
 		return -1.0f;
 	}
 
-	void gmhSetStillnessAccelDelta(GamepadMotion* motion, float value) {
+	void SetStillnessAccelDelta(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.StillnessAccelDelta = value;
 		}
 	}
 
-	float gmhGetStillnessAccelDelta(GamepadMotion* motion) {
+	float GetStillnessAccelDelta(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.StillnessAccelDelta;
 		}
 		return -1.0f;
 	}
 
-	void gmhSetSensorFusionCalibrationSmoothingStrength(GamepadMotion* motion, float value) {
+	void SetSensorFusionCalibrationSmoothingStrength(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.SensorFusionCalibrationSmoothingStrength = value;
 		}
 	}
 
-	float gmhGetSensorFusionCalibrationSmoothingStrength(GamepadMotion* motion) {
+	float GetSensorFusionCalibrationSmoothingStrength(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.SensorFusionCalibrationSmoothingStrength;
 		}
 		return 2.0f;
 	}
 
-	void gmhSetSensorFusionAngularAccelerationThreshold(GamepadMotion* motion, float value) {
+	void SetSensorFusionAngularAccelerationThreshold(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.SensorFusionAngularAccelerationThreshold = value;
 		}
 	}
 
-	float gmhGetSensorFusionAngularAccelerationThreshold(GamepadMotion* motion) {
+	float GetSensorFusionAngularAccelerationThreshold(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.SensorFusionAngularAccelerationThreshold;
 		}
 		return 20.0f;
 	}
 
-	void gmhSetSensorFusionCalibrationEaseInTime(GamepadMotion* motion, float value) {
+	void SetSensorFusionCalibrationEaseInTime(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.SensorFusionCalibrationEaseInTime = value;
 		}
 	}
 
-	float gmhGetSensorFusionCalibrationEaseInTime(GamepadMotion* motion) {
+	float GetSensorFusionCalibrationEaseInTime(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.SensorFusionCalibrationEaseInTime;
 		}
 		return 3.0f;
 	}
 
-	void gmhSetSensorFusionCalibrationHalfTime(GamepadMotion* motion, float value) {
+	void SetSensorFusionCalibrationHalfTime(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.SensorFusionCalibrationHalfTime = value;
 		}
 	}
 
-	float gmhGetSensorFusionCalibrationHalfTime(GamepadMotion* motion) {
+	float GetSensorFusionCalibrationHalfTime(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.SensorFusionCalibrationHalfTime;
 		}
 		return 0.1f;
 	}
 
-	void gmhSetSensorFusionConfidenceRate(GamepadMotion* motion, float value) {
+	void SetSensorFusionConfidenceRate(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.SensorFusionConfidenceRate = value;
 		}
 	}
 
-	float gmhGetSensorFusionConfidenceRate(GamepadMotion* motion) {
+	float GetSensorFusionConfidenceRate(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.SensorFusionConfidenceRate;
 		}
 		return 1.0f;
 	}
 
-	void gmhSetGravityCorrectionShakinessMaxThreshold(GamepadMotion* motion, float value) {
+	void SetGravityCorrectionShakinessMaxThreshold(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.GravityCorrectionShakinessMaxThreshold = value;
 		}
 	}
 
-	float gmhGetGravityCorrectionShakinessMaxThreshold(GamepadMotion* motion) {
+	float GetGravityCorrectionShakinessMaxThreshold(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.GravityCorrectionShakinessMaxThreshold;
 		}
 		return 0.4f;
 	}
 
-	void gmhSetGravityCorrectionShakinessMinThreshold(GamepadMotion* motion, float value) {
+	void SetGravityCorrectionShakinessMinThreshold(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.GravityCorrectionShakinessMinThreshold = value;
 		}
 	}
 
-	float gmhGetGravityCorrectionShakinessMinThreshold(GamepadMotion* motion) {
+	float GetGravityCorrectionShakinessMinThreshold(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.GravityCorrectionShakinessMinThreshold;
 		}
 		return 0.01f;
 	}
 
-	void gmhSetGravityCorrectionStillSpeed(GamepadMotion* motion, float value) {
+	void SetGravityCorrectionStillSpeed(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.GravityCorrectionStillSpeed = value;
 		}
 	}
 
-	float gmhGetGravityCorrectionStillSpeed(GamepadMotion* motion) {
+	float GetGravityCorrectionStillSpeed(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.GravityCorrectionStillSpeed;
 		}
 		return 1.0f;
 	}
 
-	void gmhSetGravityCorrectionShakySpeed(GamepadMotion* motion, float value) {
+	void SetGravityCorrectionShakySpeed(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.GravityCorrectionShakySpeed = value;
 		}
 	}
 
-	float gmhGetGravityCorrectionShakySpeed(GamepadMotion* motion) {
+	float GetGravityCorrectionShakySpeed(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.GravityCorrectionShakySpeed;
 		}
 		return 0.1f;
 	}
 
-	void gmhSetGravityCorrectionGyroFactor(GamepadMotion* motion, float value) {
+	void SetGravityCorrectionGyroFactor(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.GravityCorrectionGyroFactor = value;
 		}
 	}
 
-	float gmhGetGravityCorrectionGyroFactor(GamepadMotion* motion) {
+	float GetGravityCorrectionGyroFactor(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.GravityCorrectionGyroFactor;
 		}
 		return 0.1f;
 	}
 
-	void gmhSetGravityCorrectionGyroMinThreshold(GamepadMotion* motion, float value) {
+	void SetGravityCorrectionGyroMinThreshold(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.GravityCorrectionGyroMinThreshold = value;
 		}
 	}
 
-	float gmhGetGravityCorrectionGyroMinThreshold(GamepadMotion* motion) {
+	float GetGravityCorrectionGyroMinThreshold(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.GravityCorrectionGyroMinThreshold;
 		}
 		return 0.05f;
 	}
 
-	void gmhSetGravityCorrectionGyroMaxThreshold(GamepadMotion* motion, float value) {
+	void SetGravityCorrectionGyroMaxThreshold(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.GravityCorrectionGyroMaxThreshold = value;
 		}
 	}
 
-	float gmhGetGravityCorrectionGyroMaxThreshold(GamepadMotion* motion) {
+	float GetGravityCorrectionGyroMaxThreshold(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.GravityCorrectionGyroMaxThreshold;
 		}
 		return 0.25f;
 	}
 
-	void gmhSetGravityCorrectionMinimumSpeed(GamepadMotion* motion, float value) {
+	void SetGravityCorrectionMinimumSpeed(GamepadMotion* motion, float value) {
 		if (motion) {
 			motion->Settings.GravityCorrectionMinimumSpeed = value;
 		}
 	}
 
-	float gmhGetGravityCorrectionMinimumSpeed(GamepadMotion* motion) {
+	float GetGravityCorrectionMinimumSpeed(GamepadMotion* motion) {
 		if (motion) {
 			return motion->Settings.GravityCorrectionMinimumSpeed;
 		}
