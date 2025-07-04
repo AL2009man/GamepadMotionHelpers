@@ -306,36 +306,54 @@ extern "C" {
 	void GetCalibratedGyro(GamepadMotion* motion, float* x, float* y, float* z) {
 		if (motion) {
 			motion->GetCalibratedGyro(*x, *y, *z);
+		} else {
+			static GamepadMotion defaults;
+			defaults.GetCalibratedGyro(*x, *y, *z);
 		}
 	}
 
 	void GetGravity(GamepadMotion* motion, float* x, float* y, float* z) {
 		if (motion) {
 			motion->GetGravity(*x, *y, *z);
+		} else {
+			static GamepadMotion defaults;
+			defaults.GetGravity(*x, *y, *z);
 		}
 	}
 
 	void GetProcessedAcceleration(GamepadMotion* motion, float* x, float* y, float* z) {
 		if (motion) {
 			motion->GetProcessedAcceleration(*x, *y, *z);
+		} else {
+			static GamepadMotion defaults;
+			defaults.GetProcessedAcceleration(*x, *y, *z);
 		}
 	}
 
 	void GetOrientation(GamepadMotion* motion, float* w, float* x, float* y, float* z) {
 		if (motion) {
 			motion->GetOrientation(*w, *x, *y, *z);
+		} else {
+			static GamepadMotion defaults;
+			defaults.GetOrientation(*w, *x, *y, *z);
 		}
 	}
 
 	void GetPlayerSpaceGyro(GamepadMotion* motion, float* x, float* y, float yawRelaxFactor) {
 		if (motion) {
 			motion->GetPlayerSpaceGyro(*x, *y, yawRelaxFactor);
+		} else {
+			static GamepadMotion defaults;
+			defaults.GetPlayerSpaceGyro(*x, *y, yawRelaxFactor);
 		}
 	}
 
 	void GetWorldSpaceGyro(GamepadMotion* motion, float* x, float* y, float sideReductionThreshold) {
 		if (motion) {
 			motion->GetWorldSpaceGyro(*x, *y, sideReductionThreshold);
+		} else {
+			static GamepadMotion defaults;
+			defaults.GetWorldSpaceGyro(*x, *y, sideReductionThreshold);
 		}
 	}
 
@@ -361,6 +379,9 @@ extern "C" {
 	void GetCalibrationOffset(GamepadMotion* motion, float* xOffset, float* yOffset, float* zOffset) {
 		if (motion) {
 			motion->GetCalibrationOffset(*xOffset, *yOffset, *zOffset);
+		} else {
+			static GamepadMotion defaults;
+			defaults.GetCalibrationOffset(*xOffset, *yOffset, *zOffset);
 		}
 	}
 
@@ -374,7 +395,8 @@ extern "C" {
 		if (motion) {
 			return motion->GetAutoCalibrationConfidence();
 		}
-		return 0.0f;
+		static GamepadMotion defaults;
+		return defaults.GetAutoCalibrationConfidence();
 	}
 
 	void SetAutoCalibrationConfidence(GamepadMotion* motion, float newConfidence) {
@@ -387,14 +409,16 @@ extern "C" {
 		if (motion) {
 			return motion->GetAutoCalibrationIsSteady();
 		}
-		return false;
+		static GamepadMotion defaults;
+		return defaults.GetAutoCalibrationIsSteady();
 	}
 
 	int GetCalibrationMode(GamepadMotion* motion) {
 		if (motion) {
 			return (int)motion->GetCalibrationMode();
 		}
-		return (int)GamepadMotionHelpers::CalibrationMode::Manual;
+		static GamepadMotion defaults;
+		return (int)defaults.GetCalibrationMode();
 	}
 
 	void SetCalibrationMode(GamepadMotion* motion, int calibrationMode) {
