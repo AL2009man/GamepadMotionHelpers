@@ -5,15 +5,7 @@
 #pragma once
 
 #define _USE_MATH_DEFINES
-#ifdef _WIN32
-    #ifdef _MSC_VER
-        #define GamepadMotion_WRAPPER __declspec(dllexport)
-    #else
-        #define GamepadMotion_WRAPPER __attribute__((dllexport))
-    #endif
-#else
-    #define GamepadMotion_WRAPPER
-#endif
+#define GamepadMotion_WRAPPER _declspec(dllexport)
 #include <math.h>
 #include <algorithm> // std::min, std::max and std::clamp
 
